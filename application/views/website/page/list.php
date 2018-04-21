@@ -10,20 +10,19 @@
     });
 
 	var change_status = function(idx) {
-
 		if (confirm('Sure?')) {
-
-
-			$.post("/p2p/api_done/", {"idx" : idx}, function() {
+			$.post("/admin/action/p2p/api_done/", {"idx" : idx}, function() {
 				location.reload();
 			})
 		}
-
 	}
+    var toggleButton = function() {
+        $(".btn-done").toggle();
+    }
 </script>
 
 <div class="container">
-    <h1>전체 지급 스케줄</h1>
+    <h1 onclick="toggleButton();">전체 지급 스케줄</h1>
     <h2>전체 투자기간동안 지급 예정인 상세 내역을 확인하실 수 있습니다.</h2>
 
     <table class="table">
@@ -90,12 +89,10 @@
                     <tr class="status-<?php echo $row->getMarker(); ?>">
                         <td class="text-center">
 							<?php echo $row->getDate(); ?>
-							<?php if ( isset($show_marker) ) { ?>
-								<?php if ($row->getMarker() == 1) { ?>
-									<div class="btn-done" onclick="change_status(<?php echo $row->getIdx(); ?>);">
-										받았음
-									</div>
-								<?php } ?>
+							<?php if ($row->getMarker() == 1) { ?>
+								<div class="btn-done" onclick="change_status(<?php echo $row->getIdx(); ?>);">
+									받았음
+								</div>
 							<?php } ?>
 						</td>
                         <td class="text-center"><?php echo $product->getCompanyIdx(true)->getName(); ?></td>

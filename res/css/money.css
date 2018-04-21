@@ -116,6 +116,7 @@ a img{border:0px;}
 }
 
 .table tbody td .btn-done {
+    display: none;
     position: absolute;
     top: 4px;
     left: -61px;

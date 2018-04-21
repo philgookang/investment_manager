@@ -66,6 +66,50 @@ class P2pReturnsDM extends DataModel  {
         ));
     }
 
+    public function getListJoin( $search_month ) {
+
+        $search_month =  $search_month . '%';
+
+        $query	= "SELECT ";
+        $query .=   "  `p2p_c`.`idx` as company_idx, ";
+        $query .=   "  `p2p_c`.`name` as company_name, ";
+        $query .=   "  `p2p_p`.`idx` as product_idx, ";
+        $query .=   "  `p2p_p`.`name` as product_name, ";
+        $query .=   "  `p2p_p`.`interest` as interest_rate, ";
+        $query .=   "  `p2p_p`.`amount` as investment_amount, ";
+        $query .=   "  `p2p_p`.`total_time` as investment_total_term, ";
+        $query .=   "  `p2p_p`.`heartbeat` as investment_status, ";
+        $query .=   "  `p2p_p`.`heartbeat_complete` as investment_status_complete, ";
+        $query .=   "  `p2p_r`.`profit` as profit, ";
+        $query .=   "  `p2p_r`.`profit_late` as profit_late, ";
+        $query .=   "  `p2p_r`.`tax` as tax, ";
+        $query .=   "  `p2p_r`.`susuro` as fee, ";
+        $query .=   "  `p2p_r`.`date` as date, ";
+        $query .=   "  `p2p_r`.`term` as current_term, ";
+        $query .=   "  `p2p_r`.`marker` as term_marker, ";
+        $query .=   "  `p2p_r`.`type` as type ";
+		$query .= "FROM ";
+        $query .=   "`p2p_returns` `p2p_r`, ";
+        $query .=   "`p2p_product` `p2p_p`, ";
+        $query .=   "`p2p_company` `p2p_c` ";
+		$query .= "WHERE ";
+        $query .=	"`p2p_r`.`product_idx` = `p2p_p`.`idx` AND ";
+        $query .=	"`p2p_p`.`company_idx` = `p2p_c`.`idx` AND ";
+        $query .=	"`p2p_r`.`date` LIKE ? AND ";
+		$query .=	"`p2p_r`.`status`=? ";
+		$query .=	"ORDER BY `p2p_r`.`date` asc ";
+
+        $status = 'A';
+
+		$fmt = "ss";
+
+		$params = array($fmt);
+        $params[] = &$search_month;
+		$params[] = &$status;
+
+        return $this->postman->returnDataList( $query, $params );
+    }
+
     public function getList( $search_month, $product_idx, $type, $sortBy, $sortDirection, $limit, $offset, $total_count = false, $select ) {
 
         $query	= "SELECT ";

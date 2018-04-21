@@ -2,6 +2,10 @@
 
 class P2p extends CI_Controller {
 
+	public function api_done() {
+		P2pReturnsBM::new()->setIdx($this->input->post('idx'))->setMarker(2)->updateMarker();
+	}
+
 	public function index() {
 
         $product = P2pProductBM::new()

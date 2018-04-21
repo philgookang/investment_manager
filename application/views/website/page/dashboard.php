@@ -1,0 +1,194 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="container">
+    <h1>투자수익 vs 대출이자</h1>
+    <div id="investment_load_chart" style="background-color: #dfdfdf; border: 1px solid #dfdfdf; box-sizing: border-box; padding: 1px; height: 500px;">
+
+    </div>
+</div>
+<!--/.container-->
+
+<div class="container">
+    <h1>P2P 이자 지급 스케줄</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th rowspan="2" style="width: 100px;">지급일</th>
+				<th rowspan="2" style="width: 90px;">회사명</th>
+                <th rowspan="2">이름</th>
+				<th rowspan="2" style="width: 60px;">이자</th>
+				<th rowspan="2" style="width: 70px;">회차</th>
+                <th rowspan="2" style="width: 70px;">기간</th>
+				<th rowspan="2" style="width: 103px;">투자금</th>
+                <th colspan="5">지급예정내역</th>
+                <th rowspan="2" style="width: 110px;">실지급금액</th>
+            </tr>
+            <tr>
+                <th style="width: 105px;">원금</th>
+                <th style="width: 105px;">이자</th>
+                <th style="width: 105px;">연체이자</th>
+                <th style="width: 105px;">세금(-)</th>
+                <th style="width: 105px;">수수료(-)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($summary['list'] as $investment) { ?>
+                <tr class="status-<?php echo $investment->term_marker; ?>">
+                    <td class="text-center">
+                        <?php echo $investment->date; ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo $investment->company_name; ?>
+                    </td>
+                    <td>
+                        <?php echo $investment->product_name; ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo $investment->interest_rate; ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo $investment->current_term; ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo $investment->investment_total_term; ?>
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($investment->investment_amount); ?>
+                    </td>
+                    <?php if ($investment->type == 1) { ?>
+                        <td class="text-right">0 원</td>
+                        <td class="text-right"><?php echo number_format($investment->profit); ?> 원</td>
+                    <?php } else { ?>
+                        <td class="text-right"><?php echo number_format($investment->profit); ?> 원</td>
+                        <td class="text-right">0 원</td>
+                    <?php } ?>
+                    <td class="text-right">
+                        <?php echo number_format($investment->profit_late); ?> 원
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($investment->tax); ?> 원
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($investment->fee); ?> 원
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($investment->total); ?> 원
+                    </td>
+                </tr>
+            <?php } ?>
+            <tr class="sum_row">
+                <td class="text-center" colspan="6" style="padding-top: 0px;">합계</td>
+                <td class="text-right">
+                    <span>투자금</span>
+                    <?php echo number_format($summary['total_investment']); ?> 원
+                </td>
+                <td class="text-right">
+                    <span>원금 회수</span>
+                    <?php echo number_format($summary['total_return_investment']); ?> 원
+                </td>
+                <td class="text-right">
+                    <span>이자 수익</span>
+                    <?php echo number_format($summary['total_profit']); ?> 원
+                </td>
+                <td class="text-right">
+                    <span>연체금</span>
+                    <?php echo number_format($summary['total_profit_late']); ?> 원
+                </td>
+                <td class="text-right">
+                    <span>세금</span>
+                    <?php echo number_format($summary['total_tax']); ?> 원
+                <td class="text-right">
+                    <span>수수료</span>
+                    <?php echo number_format($summary['total_fee']); ?> 원
+                </td>
+                <td class="text-right">
+                    <span>총수익</span>
+                    <?php echo number_format($summary['total_value']); ?> 원
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--/.container-->
+
+<div class="container">
+    <h1>연체금 상황</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 90px;">회사명</th>
+                <th>이름</th>
+                <th style="width: 110px;">연체금</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $total_late = 0; ?>
+            <?php foreach($late_list as $late) { ?>
+                <?php
+                    $returned_list = P2pReturnsBM::new()->setProductIdx($late->getIdx())->setType(2)->getList( 'idx', 'asc', '0', '0');
+
+                    $reduce_amount = 0;
+                    foreach($returned_list as $ree) {
+                        $reduce_amount += $ree->getProfit();
+                    }
+
+                    $late_total_left = $late->getAmount() - $reduce_amount;
+                    $total_late += $late_total_left;
+                ?>
+                <tr class="status-3">
+                    <td class="text-center">
+                        <?php echo $late->getCompanyIdx(true)->getName(); ?>
+                    </td>
+                    <td>
+                        <?php echo $late->getName(); ?>
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($late_total_left); ?> 원
+                    </td>
+                </tr>
+            <?php } ?>
+            <tr class="sum_row">
+                <td class="text-center" colspan="2" style="padding-top: 0px;"></td>
+                <td class="text-right" style="padding-top: 0px;">
+                    <?php echo number_format($total_late); ?> 원
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--/.container-->
+
+<br /><br /><br />
+
+<script>
+
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawTrendlines);
+
+    function drawTrendlines() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Date');
+      data.addColumn('number', '투자수익');
+      data.addColumn('number', '대출이자');
+
+        data.addRows([
+            <?php
+                for($i = 0; $i < count($analytics_list); $i++) {
+                    if ($i != 0) { echo ', '; }
+                    echo '["'.$analytics_list[$i]['month'].'", '.$analytics_list[$i]['profit'].', 0]';
+                }
+            ?>
+        ]);
+
+      var options = {
+        trendlines: {
+          0: {type: 'linear', lineWidth: 5, opacity: .3},
+          1: {type: 'exponential', lineWidth: 10, opacity: .3}
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('investment_load_chart'));
+      chart.draw(data, options);
+    }
+
+</script>

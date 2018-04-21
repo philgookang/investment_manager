@@ -37,6 +37,56 @@ class P2pReturnsBM extends BusinessModel {
         return $new;
     }
 
+    // summary
+    public static function summary( $investment_list ) {
+
+        if (count($investment_list) <= 0) {
+            return array();
+        }
+
+        $total_profit               = 0;
+        $total_profit_late          = 0;
+        $total_return_investment    = 0;
+        $total_fee                  = 0;
+        $total_tax                  = 0;
+        $total_value                = 0;
+        $total_investment           = 0;
+
+        $total_investment_check_list = array();
+
+        foreach($investment_list as $investment) {
+            $profit = 0;
+            if ($investment->type == 1) {
+                $total_profit += $investment->profit;
+                $profit = $investment->profit;
+            } else {
+                $total_return_investment += $investment->profit;
+            }
+            $total_profit_late  += $investment->profit_late;
+            $total_tax          += $investment->tax;
+            $total_fee          += $investment->fee;
+
+            if (!in_array($investment->product_idx, $total_investment_check_list)) {
+                $total_investment   += $investment->investment_amount;
+                array_push($total_investment_check_list, $investment->product_idx);
+            }
+
+            $investment->total  = ($profit + $investment->profit_late) - ($investment->tax + $investment->fee);
+            $total_value        += $investment->total;
+        }
+
+        return array(
+            'total_profit_late'         => $total_profit_late,
+            'total_fee'                 => $total_fee,
+            'total_tax'                 => $total_tax,
+            'total_profit'              => $total_profit,
+            'total_return_investment'   => $total_return_investment,
+            'total_value'               => $total_value,
+            'total_investment'          => $total_investment,
+            'list'                      => $investment_list
+        );
+    }
+
     //// ------------------------------ create setter & getters
 
     public function setIdx( $idx ) {
@@ -156,6 +206,11 @@ class P2pReturnsBM extends BusinessModel {
         }
 
         return $return_list;
+    }
+
+    public function getListJoin() {
+        $list = $this->dm->getListJoin( $this->search_month );
+        return $list;
     }
 
     public function getTotal( $sortBy = 'idx', $sortDirection = 'desc', $select = 'count(*) as cnt ' ) {
