@@ -1,15 +1,13 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <div class="container">
-    <h1>투자수익 vs 대출이자</h1>
-    <div id="investment_load_chart" style="background-color: #dfdfdf; border: 1px solid #dfdfdf; box-sizing: border-box; padding: 1px; height: 500px;">
-
-    </div>
+    <h1>투자수익</h1>
+    <div id="investment_load_chart" style="background-color: #dfdfdf; border: 1px solid #dfdfdf; box-sizing: border-box; padding: 1px; height: 500px;"></div>
 </div>
 <!--/.container-->
 
 <div class="container">
-    <h1>P2P 이자 지급 스케줄</h1>
+    <h1>이번달 이자 지급 스케줄</h1>
     <table class="table">
         <thead>
             <tr>
@@ -112,11 +110,11 @@
 <!--/.container-->
 
 <div class="container">
-    <h1>연체금 상황</h1>
+    <h1>이번달 연체금 상황</h1>
     <table class="table">
         <thead>
             <tr>
-                <th style="width: 90px;">회사명</th>
+                <th style="width: 110px;">회사명</th>
                 <th>이름</th>
                 <th style="width: 110px;">연체금</th>
             </tr>
@@ -158,6 +156,74 @@
 </div>
 <!--/.container-->
 
+<div class="container">
+    <h1>월별 상황</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 140px;">날짜</th>
+                <th></th>
+                <th style="width: 145px;">투자금</th>
+                <th style="width: 145px;">수익</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($analytics_list as $analytics) {?>
+                <tr >
+                    <td class="text-center">
+                        <?php $d = new DateTime($analytics['month'].'-01'); echo $d->format('Y년 m월'); ?>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <?php echo number_format($analytics['investment']); ?> 원
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($analytics['profit']); ?> 원
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
+<!--/.container-->
+
+<div class="container">
+	<h1>기업별 투자금 상환</h1>
+    <div id="business_status_chart" style="background-color: #dfdfdf; border: 1px solid #dfdfdf; box-sizing: border-box; padding: 1px; height: 400px;"></div>
+    <br />
+	<table class="table">
+		<thead>
+			<tr>
+				<th>기업명</th>
+				<th style="width: 205px;">상환중</th>
+				<th style="width: 205px; background: #ffe4e438;">연체중</th>
+				<th style="width: 205px; background: #00ff440a;">상환완료</th>
+				<th style="width: 205px;">합계</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($business['list'] as $item) { ?>
+				<tr>
+					<td class="text-left"><?php echo $item['name']; ?></td>
+					<td class="text-right"><?php echo number_format($item['process']); ?> 원</td>
+					<td class="text-right" style="background: #ffe4e438;"><?php echo number_format($item['late']); ?> 원</td>
+					<td class="text-right" style="background: #00ff440a;"><?php echo number_format($item['finish']); ?> 원</td>
+					<td class="text-right"><?php echo number_format($item['total']); ?> 원</td>
+				</tr>
+			<?php } ?>
+
+			<tr class="sum_row">
+				<td class="text-center" style="padding-top: 0px;">합계</td>
+				<td class="text-right" style="padding-top: 0px;"><?php echo number_format($business['total_process']); ?> 원</td>
+				<td class="text-right" style="padding-top: 0px; background: #ffe4e438;"><?php echo number_format($business['total_late']); ?> 원</td>
+				<td class="text-right" style="padding-top: 0px; background: #00ff440a;"><?php echo number_format($business['total_finish']); ?> 원</td>
+				<td class="text-right" style="padding-top: 0px;"><?php echo number_format($business['grand_total']); ?> 원</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!--/.container-->
+
 <br /><br /><br />
 
 <script>
@@ -166,10 +232,10 @@
     google.charts.setOnLoadCallback(drawTrendlines);
 
     function drawTrendlines() {
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Date');
-      data.addColumn('number', '투자수익');
-      data.addColumn('number', '대출이자');
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', '투자수익');
+        data.addColumn('number', '--');
 
         data.addRows([
             <?php
@@ -180,15 +246,26 @@
             ?>
         ]);
 
-      var options = {
-        trendlines: {
-          0: {type: 'linear', lineWidth: 5, opacity: .3},
-          1: {type: 'exponential', lineWidth: 10, opacity: .3}
-        }
-      };
+        var chart = new google.visualization.ColumnChart(document.getElementById('investment_load_chart'));
+        chart.draw(data, { });
 
-      var chart = new google.visualization.ColumnChart(document.getElementById('investment_load_chart'));
-      chart.draw(data, options);
+        // ============================================================
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '회사');
+        data.addColumn('number', '투자금');
+        data.addColumn('number', '연체금');
+
+        data.addRows([
+            <?php
+                for($i = 0; $i < count($business['list']); $i++) {
+                    if ($i != 0) { echo ', '; }
+                    echo '["'.$business['list'][$i]['name'].'", '.($business['list'][$i]['total'] - $business['list'][$i]['late']).', '.$business['list'][$i]['late'].']';
+                }
+            ?>
+        ]);
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('business_status_chart'));
+        chart.draw(data, { isStacked : true });
     }
-
 </script>
