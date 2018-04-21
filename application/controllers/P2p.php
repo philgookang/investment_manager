@@ -4,13 +4,14 @@ class P2p extends CI_Controller {
 
 	public function index() {
 
-		$summary 	= P2pReturnsBM::summary(P2pReturnsBM::new()->setSearchMonth(date('Y-m'))->getListJoin());
-		$late_list 	= P2pProductBM::new()->setHeartbeat('2')->getList( 'idx', 'desc', '0', 0 );
+		$summary 		= P2pReturnsBM::summary(P2pReturnsBM::new()->setSearchMonth(date('Y-m'))->getListJoin());
+		$late_list 		= P2pProductBM::new()->setHeartbeat('2')->getList( 'idx', 'desc', '0', 0 );
 
 		$data = array();
 		$data['analytics_list'] 	= $this->analytics();
 		$data['late_list']			= $late_list;
 		$data['summary'] 			= $summary;
+		$data['business']			= $this->business_status();
 
 		$this->load->view('website/template/head');
 		$this->load->view('website/page/dashboard', $data);
@@ -21,6 +22,7 @@ class P2p extends CI_Controller {
 
 		$summary_list = array();
 		$date = new DateTime('2017-05-01');
+		$total_investment = 0;
 		for($i = 0; $i < 40; $i++) {
 			$date->modify('+1 month');
 
@@ -35,12 +37,68 @@ class P2p extends CI_Controller {
 		$analytics = array();
 		foreach($summary_list as $key=>$summary) {
 			array_push($analytics, array(
-				'month' 	=> $key,
-				'profit' 	=> $summary['total_value']
+				'month' 		=> $key,
+				'investment' 	=> $summary['total_investment'],
+				'profit' 		=> $summary['total_value']
 			));
 		}
 
 		return $analytics;
+	}
+
+	public function business_status() {
+
+		$company_list 	= P2pCompanyBM::new()->getList('idx', 'asc', '0', '0');
+
+		$total_process = 0;
+		$total_late = 0;
+		$total_finish = 0;
+		$grand_total = 0;
+
+		$sublist = array();
+
+		foreach( $company_list as $company) {
+
+			$process = 0;
+			$late = 0;
+			$finish = 0;
+			$total = 0;
+
+			$product_list = P2pProductBM::new()->setCompanyIdx($company->getIdx())->getList('name', 'desc', '0', '0');
+
+			foreach($product_list as $product) {
+				if ($product->getHeartbeat() == 1) {
+					$process += $product->getAmount();
+				} else if ($product->getHeartbeat() == 2) {
+					$late += $product->getAmount();
+				} else if ($product->getHeartbeat() == 3) {
+					$finish += $product->getAmount();
+				}
+
+				$total += $product->getAmount();
+			}
+
+			array_push($sublist, array(
+				'process' 	=> $process,
+				'late' 		=> $late,
+				'finish' 	=> $finish,
+				'total' 	=> $total,
+				'name'		=> $company->getName()
+			));
+
+			$total_process += $process;
+			$total_late += $late;
+			$total_finish += $finish;
+			$grand_total += $total;
+		}
+
+		return array(
+			'list' 			=> $sublist,
+			'total_process' => $total_process,
+			'total_late' 	=> $total_late,
+			'total_finish' 	=> $total_finish,
+			'grand_total' 	=> $grand_total
+		);
 	}
 
 	public function all() {
