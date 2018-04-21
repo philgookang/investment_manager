@@ -1,0 +1,49 @@
+.content-list {
+    font-size: 0px;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 40px 30px;
+}
+.content-list .list-item {
+    display: block;
+    box-sizing: border-box;
+    padding-bottom: 15px;
+}
+.content-list .list-item .group {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 900;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 4px 8px;
+    vertical-align: middle;
+}
+.content-list .list-item .group-2 {
+    background-color: green;
+    color: #fff;
+}
+.content-list .list-item .group-1 {
+    background-color: red;
+    color: #fff;
+}
+.content-list .list-item .title {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 5px 0px;
+}
+.content-list .list-item .datetime {
+    display: block;
+    font-size: 12px;
+    font-size: 100;
+    box-sizing: border-box;
+    padding-bottom: 5px;
+}
+.content-list .list-item .content {
+    display: block;
+    font-size: 12px;
+    font-size: 100;
+    box-sizing: border-box;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

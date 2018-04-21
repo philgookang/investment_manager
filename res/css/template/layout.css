@@ -1,0 +1,20 @@
+.header {
+    height: 89px;
+    width: 100%;
+    display: block;
+    background: #fff;
+    border-bottom: 1px solid #dfdfdf;
+}
+.body {
+
+}
+.footer {
+
+}
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0px;
+}
