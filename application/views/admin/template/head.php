@@ -16,11 +16,7 @@
 
 		<title>Admin</title>
 
-		<meta http-equiv="x-dns-prefetch-control" content="on">
-		<link rel="dns-prefetch" href="//code.jquery.com" />
-		<link rel="dns-prefetch" href="//netdna.bootstrapcdn.com" />
-		<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
-		<link rel="dns-prefetch" href="//code.highcharts.com" />
+		<meta http-equiv="x-dns-prefetch-control" content="on"/>
 
 		<!-- Font -->
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"/>
@@ -36,43 +32,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/i18n/jquery-ui-timepicker-ko.js"></script>
 		<link href="https://cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.css" rel="stylesheet"/>
 
-		<!-- Admin JS -->
-		<script src="/res/admin/Blog.js"></script>
-		<script src="/res/admin/BlogManage.js"></script>
-
-		<!-- Vendor JS -->
-		<script src="/res/ckeditor/ckeditor.js"></script>
 	</head>
 	<body>
-		<div class="head">
-		<div class="container">
-			<div class="row">
-				<div class="logo">
-					LOGO LOGO
-				</div>
-				<!--/.logo-->
-			</div>
-			<!--/.row-->
 
-			<div class="navigation">
-				<ul>
-					<li><a href="/admin/blog/">Blog</a></li>
-					<li><a href="/admin/p2p/">P2P</a></li>
-				</ul>
-			</div>
-			<!--/.navigation-->
-
-			<div class="quick-menu">
-				<a href="#">Logout</a>
-				<a href="#">Logout</a>
-				<a href="#">Logout</a>
-				<a href="#">Logout</a>
-			</div>
-			<!--/.quick-menu-->
-		</div>
-		<!--/.container-->
-	</div>
-	<!--/.head-->
-
-	<div class="body">
-		<div class="container">
+		<div class="body">
+			<div class="container">

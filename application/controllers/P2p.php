@@ -33,7 +33,9 @@ class P2p extends CI_Controller {
 		array_push($list, P2pReturnsBM::new()->setSearchMonth('2019-05')->getList('date', 'asc', '0', '0'));
 		array_push($list, P2pReturnsBM::new()->setSearchMonth('2019-06')->getList('date', 'asc', '0', '0'));
 
-		$this->load->view('blog/page/p2p', array('list' => $list));
+		$this->load->view('website/template/head');
+		$this->load->view('website/page/list', array('list' => $list));
+		$this->load->view('website/template/foot');
 	}
 
 	public function change() {
@@ -67,7 +69,9 @@ class P2p extends CI_Controller {
 		array_push($list, P2pReturnsBM::new()->setSearchMonth('2019-05')->getList('date', 'asc', '0', '0'));
 		array_push($list, P2pReturnsBM::new()->setSearchMonth('2019-06')->getList('date', 'asc', '0', '0'));
 
-		$this->load->view('blog/page/p2p', array('list' => $list, 'show_marker' => 'Y'));
+		$this->load->view('website/template/head');
+		$this->load->view('website/page/list', array('list' => $list, 'show_marker' => 'Y'));
+		$this->load->view('website/template/foot');
 	}
 
 	public function api_done() {
@@ -81,6 +85,8 @@ class P2p extends CI_Controller {
 		$return_list = P2pProductBM::new()->setHeartbeat('3')->setHeartbeatComplete($date)->getList('heartbeat_complete', 'asc', '0', '0');
 		$company_list = P2pCompanyBM::new()->getList('idx', 'asc', '0', '0');
 
-		$this->load->view('blog/page/p2p_status', array('company_list' => $company_list, 'return_list' => $return_list, 'dateform' => $dateform ));
+		$this->load->view('website/template/head');
+		$this->load->view('website/page/status', array('company_list' => $company_list, 'return_list' => $return_list, 'dateform' => $dateform ));
+		$this->load->view('website/template/foot');
 	}
 }
