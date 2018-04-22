@@ -157,6 +157,50 @@
 <!--/.container-->
 
 <div class="container">
+    <h1>이번달 신규투자 상황</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 110px;">회사명</th>
+                <th>이름</th>
+                <th style="width: 110px;">투자 기간</th>
+                <th style="width: 80px;">이자</th>
+                <th style="width: 110px;">투자금</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $total_new = 0; ?>
+            <?php foreach($new_list as $new) { $total_new += $new->amount; ?>
+                <tr>
+                    <td class="text-center">
+                        <?php echo $new->company_name; ?>
+                    </td>
+                    <td>
+                        <?php echo $new->product_name; ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo $new->total_time; ?> 개월
+                    </td>
+                    <td class="text-center">
+                        <?php echo $new->interest; ?> %
+                    </td>
+                    <td class="text-right">
+                        <?php echo number_format($new->amount); ?> 원
+                    </td>
+                </tr>
+            <?php } ?>
+            <tr class="sum_row">
+                <td class="text-center" colspan="4" style="padding-top: 0px;">합계</td>
+                <td class="text-right" style="padding-top: 0px;">
+                    <?php echo number_format($total_new); ?> 원
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--/.container-->
+
+<div class="container">
     <h1>월별 상황</h1>
     <table class="table">
         <thead>
@@ -253,20 +297,20 @@
 
         var data = new google.visualization.DataTable();
         data.addColumn('string', '회사');
-        data.addColumn('number', '상환중');
-        data.addColumn('number', '연체중');
         data.addColumn('number', '상환완료');
+        data.addColumn('number', '연체중');
+        data.addColumn('number', '상환중');
 
         data.addRows([
             <?php
                 for($i = 0; $i < count($business['list']); $i++) {
                     if ($i != 0) { echo ', '; }
-                    echo '["'.$business['list'][$i]['name'].'", '.$business['list'][$i]['process'].', '.$business['list'][$i]['late'].', '.$business['list'][$i]['finish'].']';
+                    echo '["'.$business['list'][$i]['name'].'", '.$business['list'][$i]['finish'].', '.$business['list'][$i]['late'].', '.$business['list'][$i]['process'].']';
                 }
             ?>
         ]);
 
         var chart = new google.visualization.ColumnChart(document.getElementById('business_status_chart'));
-        chart.draw(data, { isStacked : true, colors: ['#001fff', '#ff0000', '#00ff1f'] });
+        chart.draw(data, { isStacked : true, colors: ['#00DD00', '#ff0000', '#001fff'] });
     }
 </script>

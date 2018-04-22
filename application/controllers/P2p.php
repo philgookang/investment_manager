@@ -4,12 +4,16 @@ class P2p extends CI_Controller {
 
 	public function index() {
 
+		$next_month = new DateTime(date('Y-m-d'));
+		$next_month->modify('+1 month');
+
 		$summary 		= P2pReturnsBM::summary(P2pReturnsBM::new()->setSearchMonth(date('Y-m'))->getListJoin());
 		$late_list 		= P2pProductBM::new()->setHeartbeat('2')->getList( 'idx', 'desc', '0', 0 );
 
 		$data = array();
 		$data['analytics_list'] 	= $this->analytics();
 		$data['late_list']			= $late_list;
+		$data['new_list']			= P2pProductBM::new()->setNewDate($next_month->format('Y-m'))->getNewList();
 		$data['summary'] 			= $summary;
 		$data['business']			= $this->business_status();
 
@@ -21,7 +25,7 @@ class P2p extends CI_Controller {
 	public function analytics() {
 
 		$summary_list = array();
-		$date = new DateTime('2017-05-01');
+		$date = new DateTime('2017-03-01');
 		$total_investment = 0;
 		for($i = 0; $i < 40; $i++) {
 			$date->modify('+1 month');
