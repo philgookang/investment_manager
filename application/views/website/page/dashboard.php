@@ -253,19 +253,20 @@
 
         var data = new google.visualization.DataTable();
         data.addColumn('string', '회사');
-        data.addColumn('number', '투자금');
-        data.addColumn('number', '연체금');
+        data.addColumn('number', '상환중');
+        data.addColumn('number', '연체중');
+        data.addColumn('number', '상환완료');
 
         data.addRows([
             <?php
                 for($i = 0; $i < count($business['list']); $i++) {
                     if ($i != 0) { echo ', '; }
-                    echo '["'.$business['list'][$i]['name'].'", '.($business['list'][$i]['total'] - $business['list'][$i]['late']).', '.$business['list'][$i]['late'].']';
+                    echo '["'.$business['list'][$i]['name'].'", '.$business['list'][$i]['process'].', '.$business['list'][$i]['late'].', '.$business['list'][$i]['finish'].']';
                 }
             ?>
         ]);
 
         var chart = new google.visualization.ColumnChart(document.getElementById('business_status_chart'));
-        chart.draw(data, { isStacked : true });
+        chart.draw(data, { isStacked : true, colors: ['#001fff', '#ff0000', '#00ff1f'] });
     }
 </script>
