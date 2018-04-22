@@ -31,6 +31,41 @@ class P2pProductDM extends DataModel  {
         ));
     }
 
+    public function getNewList( $new_date ) {
+
+        $query	= "SELECT ";
+        $query .=   " `p2p_p`.`idx`,`p2p_c`.`name` as company_name,`p2p_p`.`name` as product_name, `p2p_p`.`amount`, `p2p_p`.`interest`,`p2p_p`.`total_time` ";
+		$query .= "FROM ";
+        $query .=   "`p2p_product` as `p2p_p`, ";
+        $query .=   "`p2p_company` as `p2p_c`, ";
+        $query .=   "`p2p_returns` as `p2p_r` ";
+		$query .= "WHERE ";
+        $query .=   "`p2p_p`.`company_idx`=`p2p_c`.`idx` AND ";
+        $query .=   "`p2p_p`.`idx`=`p2p_r`.`product_idx` AND ";
+        $query .=   "`p2p_r`.`term`=? AND ";
+        $query .=   "`p2p_r`.`date` LIKE ? AND ";
+        $query .=	"`p2p_r`.`type`=? AND ";
+		$query .=	"`p2p_r`.`status`=? AND ";
+        $query .=	"`p2p_p`.`status`=? ";
+		$query .=	"ORDER BY `p2p_r`.`idx` asc ";
+
+        $term       = 1;
+        $type       = 1;
+        $status     = 'A';
+        $new_date   = $new_date.'%';
+
+		$fmt = "isiss";
+
+		$params = array($fmt);
+        $params[] = &$term;
+        $params[] = &$new_date;
+        $params[] = &$type;
+		$params[] = &$status;
+        $params[] = &$status;
+
+        return $this->postman->returnDataList( $query, $params );
+    }
+
     public function getList( $company_idx, $heartbeat, $heartbeat_complete, $sortBy, $sortDirection, $limit, $offset, $total_count = false, $select ) {
 
         $query	= "SELECT ";

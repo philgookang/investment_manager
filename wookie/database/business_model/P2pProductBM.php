@@ -16,6 +16,8 @@ class P2pProductBM extends BusinessModel {
     public $heartbeat_complete      = '0000-00-00';
     public $created_date_time       = null;
 
+    public $new_date                = null;
+
     // init function
     public function __construct() {
         $this->dm = new P2pProductDM();
@@ -110,6 +112,10 @@ class P2pProductBM extends BusinessModel {
         return $d->format($format);
     }
 
+    public function setNewDate($new_date) {
+        $this->new_date = $new_date; return $this;
+    }
+
     //// ------------------------------ action function
 
     public function create() {
@@ -130,6 +136,10 @@ class P2pProductBM extends BusinessModel {
         }
 
         return $return_list;
+    }
+
+    public function getNewList() {
+        return $this->dm->getNewList( $this->new_date );
     }
 
     public function getTotal( $sortBy = 'idx', $sortDirection = 'desc', $select = 'count(*) as cnt ' ) {
