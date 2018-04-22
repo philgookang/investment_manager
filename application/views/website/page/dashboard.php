@@ -7,7 +7,7 @@
 <!--/.container-->
 
 <div class="container">
-    <h1>이번달 이자 지급 스케줄</h1>
+    <h1>이번달 지급 스케줄</h1>
     <table class="table">
         <thead>
             <tr>
