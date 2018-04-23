@@ -18,12 +18,13 @@
 				<th rowspan="2" style="width: 70px;">회차</th>
                 <th rowspan="2" style="width: 70px;">기간</th>
 				<th rowspan="2" style="width: 103px;">투자금</th>
-                <th colspan="5">지급예정내역</th>
+                <th colspan="6">지급예정내역</th>
                 <th rowspan="2" style="width: 110px;">실지급금액</th>
             </tr>
             <tr>
                 <th style="width: 105px;">원금</th>
                 <th style="width: 105px;">이자</th>
+                <th style="width: 105px;">상품권</th>
                 <th style="width: 105px;">연체이자</th>
                 <th style="width: 105px;">세금(-)</th>
                 <th style="width: 105px;">수수료(-)</th>
@@ -39,7 +40,9 @@
                         <?php echo $investment->company_name; ?>
                     </td>
                     <td>
-                        <?php echo $investment->product_name; ?>
+                        <div class="dot-dot">
+                            <?php echo $investment->product_name; ?>
+                        </div>
                     </td>
                     <td class="text-center">
                         <?php echo $investment->interest_rate; ?>
@@ -56,9 +59,15 @@
                     <?php if ($investment->type == 1) { ?>
                         <td class="text-right">0 원</td>
                         <td class="text-right"><?php echo number_format($investment->profit); ?> 원</td>
-                    <?php } else { ?>
+                        <td class="text-right">0 원</td>
+                    <?php } else if ($investment->type == 2) { ?>
                         <td class="text-right"><?php echo number_format($investment->profit); ?> 원</td>
                         <td class="text-right">0 원</td>
+                        <td class="text-right">0 원</td>
+                    <?php } else if ($investment->type == 3) { ?>
+                        <td class="text-right">0 원</td>
+                        <td class="text-right">0 원</td>
+                        <td class="text-right"><?php echo number_format($investment->profit); ?> 원</td>
                     <?php } ?>
                     <td class="text-right">
                         <?php echo number_format($investment->profit_late); ?> 원
@@ -87,6 +96,10 @@
                 <td class="text-right">
                     <span>이자 수익</span>
                     <?php echo number_format($summary['total_profit']); ?> 원
+                </td>
+                <td class="text-right">
+                    <span>상품권</span>
+                    <?php echo number_format($summary['total_bond']); ?> 원
                 </td>
                 <td class="text-right">
                     <span>연체금</span>

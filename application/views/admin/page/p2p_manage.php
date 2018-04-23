@@ -109,6 +109,7 @@
 									<select class="input" name="type[]">
 										<option value="1" <?php if ($return->getType() == 1) { echo 'selected'; } ?>>이자</option>
 										<option value="2" <?php if ($return->getType() == 2) { echo 'selected'; } ?>>원금</option>
+										<option value="3" <?php if ($return->getType() == 3) { echo 'selected'; } ?>>상품권</option>
 									</select>
 								</td>
 								<td class="text-center">
@@ -170,6 +171,7 @@
 					'<select class="input" name="type[]">'+
 						'<option value="1">이자</option>' +
 						'<option value="2">원금</option>' +
+						'<option value="3">상품권</option>' +
 					'</select>' +
 				'</td>' +
 				'<td class="text-center"><div class="btn btn-xs btn-danger" onclick=" if (confirm(\'Are you sure?\')) { $(this).parent().parent().remove(); } ">삭제</div></td>' +
