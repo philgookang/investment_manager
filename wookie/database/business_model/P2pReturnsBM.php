@@ -47,6 +47,7 @@ class P2pReturnsBM extends BusinessModel {
         $total_profit               = 0;
         $total_profit_late          = 0;
         $total_return_investment    = 0;
+        $total_bond                 = 0;
         $total_fee                  = 0;
         $total_tax                  = 0;
         $total_value                = 0;
@@ -59,8 +60,11 @@ class P2pReturnsBM extends BusinessModel {
             if ($investment->type == 1) {
                 $total_profit += $investment->profit;
                 $profit = $investment->profit;
-            } else {
+            } else if ($investment->type == 2) {
                 $total_return_investment += $investment->profit;
+            } else if ($investment->type == 3) {
+                $total_bond += $investment->profit;
+                $profit = $investment->profit;
             }
             $total_profit_late  += $investment->profit_late;
             $total_tax          += $investment->tax;
@@ -83,6 +87,7 @@ class P2pReturnsBM extends BusinessModel {
             'total_return_investment'   => $total_return_investment,
             'total_value'               => $total_value,
             'total_investment'          => $total_investment,
+            'total_bond'                => $total_bond,
             'list'                      => $investment_list
         );
     }
