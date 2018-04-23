@@ -141,3 +141,13 @@ a img{border:0px;}
 .status-3 td {
     background-color: #ff00000d;
 }
+.dot-dot {
+    width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    text-align: left;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
