@@ -30,9 +30,13 @@ class Postman {
 
 			$this->mysqlConnection = mysqli_init();
 
-			if(mysqli_real_connect($this->mysqlConnection, $host, $userid, $password, $database)) {
-				mysqli_set_charset( $this->mysqlConnection, 'utf8mb4' );
-				mysqli_query($this->mysqlConnection, 'SET NAMES utf8mb4');
+			// load database connection information
+			$config = json_decode(file_get_contents('/var/www/database.config'));
+
+			// create connection
+			if(mysqli_real_connect($this->mysqlConnection, $config->aws_1->host, $config->aws_1->user, $config->aws_1->password, 'investment', $config->aws_1->port)) {
+				mysqli_set_charset( $this->mysqlConnection, $config->aws_1->charset );
+				mysqli_query($this->mysqlConnection, 'SET NAMES ' . $config->aws_1->connection);
 			}
 		}
 
