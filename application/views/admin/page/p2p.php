@@ -22,50 +22,37 @@
 					<th style="width: 80px;">#</th>
 					<th style="width: 140px;"></th>
                     <th>Name</th>
-                    <th style="width: 120px;">Created Date</th>
 					<th style="width: 90px;">Menu</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach($list as $product) { ?>
     				<tr>
-                        <td class="text-center"><?php echo $product->getIdx(); ?></td>
+                        <td class="text-center"><?php echo $product->idx; ?></td>
 						<td class="text-center">
-							<?php echo $product->getCompanyIdx(true)->getName(); ?>
+							<?php echo $product->company_name; ?>
 						</td>
     					<td>
-							<?php echo $product->getName(); ?>
+							<?php echo $product->product_name; ?>
 
 							<?php
-								if ($product->getHeartbeat() == 1) {
+								if ($product->investment_status == PRODUCT_INVESTMENT_STATUS::REDEEM) {
 									echo '<span class="label label-default">상환중</span>';
-								} else if ($product->getHeartbeat() == 2) {
+								} else if ($product->investment_status == PRODUCT_INVESTMENT_STATUS::OVERDUE) {
 									echo '<span class="label label-danger">연체중</span>';
-								} else if ($product->getHeartbeat() == 3) {
-									echo '<span class="label label-success">상환완료 : '.$product->getHeartbeatComplete().'</span>';
+								} else if ($product->investment_status == PRODUCT_INVESTMENT_STATUS::COMPLETE) {
+									echo '<span class="label label-success">상환완료 : '.$product->investment_complete_date.'</span>';
 								}
 							?>
 						</td>
-                        <td class="text-center"><?php echo $product->getCreatedDateTime('m월 d일 H:i'); ?></td>
-    					<td class="menu">
-    						<a href="/admin/p2p/manage/<?php echo $product->getIdx(); ?>" class="menu-item">Edit</a>
-							<a href="#" onclick="P2p.remove(this, <?php echo $product->getIdx(); ?>); return false;" class="menu-item">Delete</a>
+						<td class="menu">
+    						<a href="/admin/p2p/manage/<?php echo $product->idx; ?>" class="menu-item">Edit</a>
     					</td>
     				</tr>
-                <?php } ?>
-                <?php if (count($list) == 0) { ?>
-                    <tr>
-                        <td colspan="6" class="text-center">No Results! :(</td>
-                    </tr>
                 <?php } ?>
 			</tbody>
 		</table>
 	</div>
 	<!--/.panel-body-->
-
-    <?php if ( $pagination != '' ) { ?>
-        <div class="panel-block text-center"><?php echo $pagination; ?>&nbsp;</div>
-    	<!--/.panel-block-->
-    <?php } ?>
 </div>
 <!--/.panel-->

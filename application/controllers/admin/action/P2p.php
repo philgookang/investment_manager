@@ -8,28 +8,33 @@ class P2p extends CI_Controller {
 
 	public function index() {
 
-        $product = P2pProductBM::new()
+        $product = ProductM::new()
                     ->setIdx($this->input->post('product_idx'))
 					->setCompanyIdx($this->input->post('company_idx'))
                     ->setName($this->input->post('name'))
+					->setInvestmentType($this->input->post('investment_type'))
                     ->setAmount($this->input->post('amount'))
                     ->setInterest($this->input->post('interest'))
-					->setTotalTime($this->input->post('total_time'))
-					->setHeartbeat($this->input->post('heartbeat'))
-					->setHeartbeatComplete($this->input->post('heartbeat_complete'));
+					->setTotalTerm($this->input->post('total_term'))
+					->setLateStartDate($this->input->post('late_start_date'))
+					->setLateEndDate($this->input->post('late_end_date'))
+					->setInvestmentStatus($this->input->post('investment_status'))
+					->setInvestmentCompleteDate($this->input->post('investment_complete_date'));
 
-        if ($product->getIdx() == '0') {
+        if ($product->getIdx() == null) {
             $product->setIdx($product->create());
         } else {
             $product->update();
         }
 
         // remove all first
-        P2pReturnsBM::new()->setProductIdx($product->getIdx())->removeAll();
+        ReturnsM::new()->setProductIdx($product->getIdx())->setStatus(1)->removeAll();
 
         $idx_list           = $this->input->post('idx');
         $date_list          = $this->input->post('date');
-        $profit_list        = $this->input->post('profit');
+        $investment_list    = $this->input->post('investment');
+		$profit_list        = $this->input->post('profit');
+		$bond_list        	= $this->input->post('bond');
         $profit_late_list   = $this->input->post('profit_late');
         $tax_list           = $this->input->post('tax');
 		$term_list          = $this->input->post('term');
@@ -41,7 +46,9 @@ class P2p extends CI_Controller {
 
             $idx            = (isset($idx_list[$i])) ? $idx_list[$i] : '0';
             $date           = (isset($date_list[$i])) ? $date_list[$i] : '0';
+			$investment		= (isset($investment_list[$i]) && ($investment_list[$i] != '')) ? $investment_list[$i] : '0';
             $profit         = (isset($profit_list[$i]) && ($profit_list[$i] != '')) ? $profit_list[$i] : '0';
+			$bond			= (isset($bond_list[$i]) && ($bond_list[$i] != '')) ? $bond_list[$i] : '0';
             $profit_late    = (isset($profit_late_list[$i]) && ($profit_late_list[$i] != '')) ? $profit_late_list[$i] : '0';
             $tax            = (isset($tax_list[$i]) && ($tax_list[$i] != '')) ? $tax_list[$i] : '0';
 			$term           = (isset($term_list[$i]) && ($term_list[$i] != '')) ? $term_list[$i] : '0';
@@ -50,22 +57,25 @@ class P2p extends CI_Controller {
 
 			$type 			= (isset($type_list[$i]) && ($type_list[$i] != '')) ? $type_list[$i] : '0';
 
+			$investment = str_replace(',', '', $investment);
 			$profit = str_replace(',', '', $profit);
+			$bond = str_replace(',', '', $bond);
 			$profit_late = str_replace(',', '', $profit_late);
 			$tax = str_replace(',', '', $tax);
 			$service_price = str_replace(',', '', $service_price);
 
-            $return = P2pReturnsBM::new()
+            $return = ReturnsM::new()
                         ->setIdx($idx)
                         ->setProductIdx($product->getIdx())
                         ->setDate($date)
+						->setInvestment($investment)
                         ->setProfit($profit)
+						->setBond($bond)
                         ->setProfitLate($profit_late)
                         ->setTax($tax)
 						->setTerm($term)
-                        ->setSusuro($service_price)
-						->setMarker($marker)
-						->setType($type);
+                        ->setFee($service_price)
+						->setPaymentStatus($marker);
 
             if ( $return->getIdx() == '0') {
                 $return->create();

@@ -4,26 +4,14 @@ class P2p extends CI_Controller {
 
 	public function index() {
 
-        $limit      = ($this->input->get('limit')) ? $this->input->get('limit') : '100';
-        $sort_dir   = ($this->input->get('sort_direction')) ? $this->input->get('sort_direction') : 'desc';
-        $sort_by    = ($this->input->get('sort_by')) ? $this->input->get('sort_by') : 'idx';
-        $offset     = ($this->input->get('per_page')) ? $this->input->get('per_page') : '0';
+		$product = ProductM::new();
 
-		$product = P2pProductBM::new();
-
-		if ($this->input->get('heartbeat') != '') {
-			$product->setHeartbeat($this->input->get('heartbeat'));
+		if ($this->input->get('investment_status') != '') {
+			$product->setInvestmentStatus($this->input->get('investment_status'));
 		}
 
-        $list = $product->getList( $sort_by, $sort_dir, $limit, $offset );
-        $total_count = $product->getTotal();
-
-        $pagination = pagination('/admin/p2p/?', $limit, $total_count);
-
         $data = array();
-        $data['list']           = $list;
-        $data['pagination']     = $pagination;
-        $data['total_count']    = $total_count;
+        $data['list'] = $product->getList();
 
         $this->load->view('admin/template/head');
         $this->load->view('admin/page/p2p', $data);
@@ -32,14 +20,10 @@ class P2p extends CI_Controller {
 
     public function manage($idx = '-1') {
 
-        $product = P2pProductBM::new()->setIdx($idx)->get();
-		$return_list = P2pReturnsBM::new()->setProductIdx($idx)->getList( 'idx', 'asc', '0', '0');
-		$company_list = P2pCompanyBM::new()->getList('idx', 'asc', '0', '0');
-
         $data = array();
-        $data['product'] = $product;
-		$data['return_list'] = $return_list;
-		$data['company_list'] = $company_list;
+        $data['product'] 		= ProductM::new()->setIdx($idx)->get();
+		$data['return_list'] 	= ReturnsM::new()->setProductIdx($idx)->getList();
+		$data['company_list'] 	= CompanyM::new()->setType(COMPANY_TYPE::FUNDING)->getList();
 
         $this->load->view('admin/template/head');
         $this->load->view('admin/page/p2p_manage', $data);

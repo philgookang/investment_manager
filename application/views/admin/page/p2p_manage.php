@@ -1,3 +1,8 @@
+<style>
+	#returns td {
+		padding: 3px 4px;
+	}
+</style>
 <div class="panel">
 	<div class="panel-header">
 		<h1>P2P Manage</h1>
@@ -6,55 +11,70 @@
 
     <form action="/admin/action/p2p" method="POST">
     	<div class="panel-body padTopNone">
-			<div class="row">
-				<select class="input" name="company_idx">
-					<?php foreach($company_list as $company) { ?>
-						<option value="<?php echo $company->getIdx(); ?>" <?php if ($product->getCompanyIdx() == $company->getIdx()) { echo 'selected'; } ?> >
-							<?php echo $company->getName(); ?>
-						</option>
-					<?php } ?>
-				</select>
-            </div>
-            <!--/.row-->
-            <br />
             <div class="row">
-                <input type="hidden" name="product_idx" value="<?php echo $product->getIdx(); ?>" />
-                <input type="text" class="input" name="name" placeholder="제목" value="<?php echo $product->getName(); ?>" />
+                <input type="hidden" name="investment_type" value="<?php echo PRODUCT_INVESTMENT_TYPE::P2PFUND; ?>" />
+				<input type="hidden" name="product_idx" value="<?php echo $product->getIdx(); ?>" />
+				<label>상품명</label>
+                <input type="text" class="input" name="name" value="<?php echo $product->getName(); ?>" />
             </div>
             <!--/.row-->
             <br />
-            <div class="row">
-                <input type="text" class="input" name="amount" placeholder="투자금" value="<?php echo $product->getAmount(); ?>" />
-            </div>
-            <!--/.row-->
-            <br />
-            <div class="row">
-                <input type="text" class="input" name="interest" placeholder="이자" value="<?php echo $product->getInterest(); ?>" />
-            </div>
-            <!--/.row-->
-            <br />
-			<div class="row">
-                <input type="text" class="input" name="total_time" placeholder="투자 기간" value="<?php echo $product->getTotalTime(); ?>" />
-            </div>
-            <!--/.row-->
-            <br />
-			<div class="row">
-				<select class="input" name="heartbeat">
-					<option value="1" <?php echo ($product->getHeartbeat() == '1') ? 'selected' : ''; ?>>상환중</option>
-					<option value="2" <?php echo ($product->getHeartbeat() == '2') ? 'selected' : ''; ?>>연체중</option>
-					<option value="3" <?php echo ($product->getHeartbeat() == '3') ? 'selected' : ''; ?>>상환완료</option>
-				</select>
-
-				<div class="pull-right">
-					상환완료일<input type="text" class="input" name="heartbeat_complete" id="heartbeat_complete" value="<?php echo $product->getHeartbeatComplete(); ?>" />
+			<div class="row-col">
+				<div class="col-4">
+					<label>업체</label>
+					<select class="input" name="company_idx">
+						<?php foreach($company_list as $company) { ?>
+							<option value="<?php echo $company->getIdx(); ?>" <?php if ($product->getCompanyIdx() == $company->getIdx()) { echo 'selected'; } ?> >
+								<?php echo $company->getName(); ?>
+							</option>
+						<?php } ?>
+					</select>
+				</div>
+				<div class="col-4">
+					<label>투자원금(원)</label>
+					<input type="text" class="input" name="amount" placeholder="" value="<?php echo $product->getAmount(); ?>" />
+				</div>
+				<div class="col-4">
+					<label>이자율(%)</label>
+					<input type="text" class="input" name="interest" value="<?php echo $product->getInterest(); ?>" />
+				</div>
+				<div class="col-4">
+					<label>투자 기간(개월)</label>
+					<input type="text" class="input" name="total_term" value="<?php echo $product->getTotalTerm(); ?>" />
 				</div>
             </div>
             <!--/.row-->
             <br />
-            <div class="row text-right">
-                <div class="btn btn-primary" onclick="add();">
-                    추가
-                </div>
+			<div class="row-col">
+				<div class="col-4">
+					<label>진행상태</label><br />
+					<div class="segmented segmented-default">
+						<label style="font-size: 11px;">
+							<input type="radio" name="investment_status" value="<?php echo PRODUCT_INVESTMENT_STATUS::REDEEM; ?>" <?php echo ($product->getInvestmentStatus()==PRODUCT_INVESTMENT_STATUS::REDEEM)?	'checked':''; ?> <?php echo ($product->getIdx()==null)?'checked':''; ?>/>
+							<span style="padding: 4px 13px;">상환중</span>
+						</label>
+						<label style="font-size: 11px;">
+							<input type="radio" name="investment_status" value="<?php echo PRODUCT_INVESTMENT_STATUS::OVERDUE; ?>" <?php echo ($product->getInvestmentStatus()==PRODUCT_INVESTMENT_STATUS::OVERDUE)?'checked':''; ?>/>
+							<span style="padding: 4px 13px;">연체중</span>
+						</label>
+						<label style="font-size: 11px;">
+							<input type="radio" name="investment_status" value="<?php echo PRODUCT_INVESTMENT_STATUS::COMPLETE; ?>" <?php echo ($product->getInvestmentStatus()==PRODUCT_INVESTMENT_STATUS::COMPLETE)?'checked':''; ?>/>
+							<span style="padding: 4px 13px;">상환완료</span>
+						</label>
+					</div>
+				</div>
+				<div class="col-4">
+					<label>연체시작</label>
+					<input type="text" class="input" name="late_start_date" value="<?php echo ($product->getLateStartDate()!=null)?$product->getLateStartDate():'0000-00-00'; ?>" />
+				</div>
+				<div class="col-4">
+					<label>연체마감</label>
+					<input type="text" class="input" name="late_end_date" value="<?php echo ($product->getLateEndDate()!=null)?$product->getLateEndDate():'0000-00-00'; ?>" />
+				</div>
+				<div class="col-4">
+					<label>투자완료</label>
+					<input type="text" class="input" name="investment_complete_date" value="<?php echo ($product->getInvestmentCompleteDate()!=null)?$product->getInvestmentCompleteDate():'0000-00-00'; ?>" />
+				</div>
             </div>
             <!--/.row-->
             <br />
@@ -62,14 +82,15 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
         				<tr>
-        					<th style="width: 130px;">날짜</th>
-							<th style="width: 80px;">회</th>
+        					<th style="width: 100px;">날짜</th>
+							<th style="width: 45px;">회</th>
+							<th>원금</th>
                             <th>수익</th>
+							<th>상품권</th>
                             <th>연체금</th>
                             <th>세금</th>
-                            <th>스스료</th>
+                            <th>수수료</th>
 							<th style="width: 80px;">상태</th>
-							<th style="width: 80px;"></th>
 							<th style="width: 40px;"></th>
         				</tr>
         			</thead>
@@ -83,8 +104,14 @@
 								<td>
                                     <input type="text" class="input" name="term[]" value="<?php echo $return->getTerm(); ?>" />
                                 </td>
+								<td>
+                                    <input type="text" class="input" name="investment[]" value="<?php echo $return->getInvestment(); ?>"/>
+                                </td>
                                 <td>
                                     <input type="text" class="input" name="profit[]" value="<?php echo $return->getProfit(); ?>"/>
+                                </td>
+								<td>
+                                    <input type="text" class="input" name="bond[]" value="<?php echo $return->getBond(); ?>"/>
                                 </td>
                                 <td>
                                     <input type="text" class="input" name="profit_late[]" value="<?php echo $return->getProfitLate(); ?>"/>
@@ -93,25 +120,18 @@
                                     <input type="text" class="input" name="tax[]" value="<?php echo $return->getTax(); ?>"/>
                                 </td>
                                 <td>
-                                    <input type="text" class="input" name="service_price[]" value="<?php echo $return->getSusuro(); ?>"/>
+                                    <input type="text" class="input" name="service_price[]" value="<?php echo $return->getFee(); ?>"/>
                                 </td>
 								<td>
                                     <select class="input" name="marker[]">
-										<option value="1" <?php if ($return->getMarker() == 1) { echo 'selected'; } ?>>
+										<option value="1" <?php if ($return->getPaymentStatus() == 1) { echo 'selected'; } ?>>
 											상환중
 										</option>
-										<option value="2" <?php if ($return->getMarker() == 2) { echo 'selected'; } ?>>
+										<option value="2" <?php if ($return->getPaymentStatus() == 2) { echo 'selected'; } ?>>
 											입금된
 										</option>
 									</select>
                                 </td>
-								<td>
-									<select class="input" name="type[]">
-										<option value="1" <?php if ($return->getType() == 1) { echo 'selected'; } ?>>이자</option>
-										<option value="2" <?php if ($return->getType() == 2) { echo 'selected'; } ?>>원금</option>
-										<option value="3" <?php if ($return->getType() == 3) { echo 'selected'; } ?>>상품권</option>
-									</select>
-								</td>
 								<td class="text-center">
 									<div class="btn btn-xs btn-danger" onclick=" if (confirm('Are you sure?')) { $(this).parent().parent().remove(); } ">삭제</div>
 								</td>
@@ -121,6 +141,15 @@
         		</table>
             </div>
             <!--/.row-->
+
+			<br />
+
+			<div class="row text-right">
+				<div class="btn btn-primary" onclick="add();">
+					추가
+				</div>
+			</div>
+			<!--/.row-->
 
             <br><br>
 
@@ -135,9 +164,9 @@
 
 <script>
 	$(function() {
-		$("#heartbeat_complete").datepicker({
-			dateFormat : "yy-mm-dd"
-		});
+		$("input[name=late_start_date]").datepicker({ dateFormat : "yy-mm-dd" });
+		$("input[name=late_end_date]").datepicker({ dateFormat : "yy-mm-dd" });
+		$("input[name=investment_complete_date]").datepicker({ dateFormat : "yy-mm-dd" });
 	});
     var add = function() {
         $("#returns").append(
@@ -149,9 +178,15 @@
 				'<td>' +
 					'<input type="text" class="input" name="term[]" value="" />' +
 				'</td>' +
+				'<td>' +
+					'<input type="text" class="input" name="investment[]" value=""/>'+
+				'</td>' +
                 '<td>' +
                     '<input type="text" class="input" name="profit[]" value="" />' +
                 '</td>' +
+				'<td>' +
+					'<input type="text" class="input" name="bond[]" value=""/>' +
+				'</td>' +
                 '<td>' +
                     '<input type="text" class="input" name="profit_late[]" value="" />' +
                 '</td>' +
@@ -165,13 +200,6 @@
 					'<select class="input" name="marker[]">'+
 						'<option value="1">상환중</option>' +
 						'<option value="2">입금된</option>' +
-					'</select>' +
-				'</td>' +
-				'<td>' +
-					'<select class="input" name="type[]">'+
-						'<option value="1">이자</option>' +
-						'<option value="2">원금</option>' +
-						'<option value="3">상품권</option>' +
 					'</select>' +
 				'</td>' +
 				'<td class="text-center"><div class="btn btn-xs btn-danger" onclick=" if (confirm(\'Are you sure?\')) { $(this).parent().parent().remove(); } ">삭제</div></td>' +

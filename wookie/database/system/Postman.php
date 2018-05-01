@@ -2,9 +2,6 @@
 
 class Postman {
 
-	// max time diff
-	var $max_time_diff = 0.04;
-
 	// postman singleton
 	static $singleton;
 
@@ -56,45 +53,12 @@ class Postman {
 
 	// -------------------------------------------------
 
-	function sql($query, $params) {
-
-		for ($i = 1; $i <= (count($params) - 1); $i++) {
-			$query = $this->str_replace_first('?', '\''. $params[$i] . '\'', $query);
-		}
-
-		return $query;
-	}
-
 	function str_replace_first($from, $to, $subject) {
 		$from = '/'.preg_quote($from, '/').'/';
 		return preg_replace($from, $to, $subject, 1);
 	}
 
 	function execute($query, $params, $return_insert_idx = false) {
-
-		$star_time	= 0;
-		$end_time	= 0;
-		$force_dev	= false;
-		$query3		= '';
-
-		if ( POSTMAN_ACTIVE_LOGGING ) {
-			$star_time = microtime(true);
-		}
-
-		if ( isset($_GET['sql']) && ($_GET['sql'] == '1') ) {
-			$force_dev	= true;
-		}
-
-		if ( $force_dev ) {
-			ini_set('display_errors', 1);
-			ini_set('display_startup_errors', 1);
-			error_reporting(E_ALL);
-		}
-
-		$query3 = $query;
-		for ($i = 1; $i <= (count($params) - 1); $i++) {
-			$query3 = $this->str_replace_first('?', '\''. $params[$i] . '\'', $query3);
-		}
 
 		$stmt = $this->mysqlConnection->stmt_init();
 		$stmt = $this->mysqlConnection->prepare($query);
@@ -103,30 +67,10 @@ class Postman {
 		$result = $stmt->execute();
 
 		if (!$result) {
-			exit(json_encode( array( 'code' => '400', 'msg' => $this->mysqlConnection->error, 'sql' => $query3 ) ));
+			exit(json_encode( array( 'code' => '400', 'msg' => $this->mysqlConnection->error ) ));
 		}
 
 		$result = $stmt->get_result();
-
-
-		if ( POSTMAN_ACTIVE_LOGGING ) {
-
-			// set end time
-			$end_time = microtime(true);
-
-			// get the time difff
-			$time_diff = ($end_time - $star_time);
-
-			// if time if is larger than
-			if ( ($this->max_time_diff < $time_diff) ) {
-				// logging( $query, $params, ($time_diff/1000) );
-			}
-		}
-
-		if ( $force_dev ) {
-			$aaa = ($end_time - $star_time);
-			echo number_format($aaa, 3)  . ' explain ' . $query3 . '; ' . '<Br />';
-		}
 
 		if ( $return_insert_idx ) {
 			return $stmt->insert_id;

@@ -9,15 +9,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
         <!-- Mobile first -->
-		<meta name="viewport" content="width=1200"/>
+		<meta name="viewport" content="width=1600"/>
 
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="/res/css/money.css"/>
 
         <!-- JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
-
 
 		<title>강필구 P2P</title>
 	</head>

@@ -1,10 +1,6 @@
 <?php
 
-class BusinessModel {
-
-    public function __construct() {
-
-    }
+class BusinessModel extends DataModel {
 
     public function extend($data) {
 
@@ -26,5 +22,7 @@ class BusinessModel {
                 $this->$variable = $data[$variable];
             }
         }
+
+        return $this;
     }
 }
