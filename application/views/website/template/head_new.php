@@ -25,8 +25,12 @@
 		                <li>
 		                    <a href="#">P2P</a>
 		                    <ul>
-		                        <li <?php if (isset($menu)&&($menu=="p2p->report")){ echo 'class="active"' ;} ?>)><a href="/p2p/report/">Report</a></li>
-		                        <li><a href="">Company</a></li>
+		                        <li>
+									<a href="/p2p/report/" <?php if (isset($menu)&&($menu=="p2p->report")){ echo 'class="active"' ;} ?>>Report</a>
+								</li>
+		                        <li>
+									<a href="/p2p/company/" <?php if (isset($menu)&&($menu=="p2p->company")){ echo 'class="active"' ;} ?>>Company</a>
+								</li>
 		                        <li><a href="">List</a></li>
 		                        <li><a href="">Late</a></li>
 		                    </ul>

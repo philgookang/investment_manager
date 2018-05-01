@@ -9,6 +9,7 @@ a:link, a:visited, visited, active, hover, focus { color:#000 ; text-decoration:
 .container {
     display: table;
     width: 100%;
+    min-height: 100%;
 }
 .container .sidebar {
     display: table-cell;
@@ -49,19 +50,23 @@ a:link, a:visited, visited, active, hover, focus { color:#000 ; text-decoration:
     width: 100%;
 }
 .container .sidebar ul li > ul > li {
+    padding: 0px;
+}
+.container .sidebar ul li > ul > li > a {
+    display: block;
     box-sizing: border-box;
     padding-top: 10px;
     padding-left: 15px;
     padding-bottom: 10px;
     border-radius: 4px;
 }
-.container .sidebar ul li > ul > li.active {
+.container .sidebar ul li > ul > li > a.active {
     background-color: #0a3d8d;
 }
-.container .sidebar ul li > ul > li:hover {
+.container .sidebar ul li > ul > li > a:hover {
     background-color: #0b367c;
 }
-.container .sidebar ul li > ul > li:active {
+.container .sidebar ul li > ul > li > a:active {
     background-color: #2683ff;
 }
 .container .sidebar ul li > ul > li > a  {
@@ -74,6 +79,7 @@ a:link, a:visited, visited, active, hover, focus { color:#000 ; text-decoration:
     box-sizing: border-box;
     padding: 40px 140px;
     font-size: 14px;
+    min-height: 100%;
 }
 .container .content h1 {
     color: #172b4d;
@@ -243,4 +249,21 @@ a:link, a:visited, visited, active, hover, focus { color:#000 ; text-decoration:
 }
 .table-hover tbody tr:hover td {
     background-color: #f9f9f9;
+}
+
+.schedule {
+    padding: 0px;
+    background-color: #fff;
+}
+.schedule .row {
+    border-bottom: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.schedule .row:last-child {
+    border-bottom: 0px;
+}
+.schedule .row td {
+    padding: 0px;
+    border: 0px;
 }
