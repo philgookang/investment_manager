@@ -31,7 +31,6 @@
 		                        <li>
 									<a href="/p2p/company/" <?php if (isset($menu)&&($menu=="p2p->company")){ echo 'class="active"' ;} ?>>Company</a>
 								</li>
-		                        <li><a href="">List</a></li>
 		                        <li><a href="">Late</a></li>
 		                    </ul>
 		                </li>
@@ -40,6 +39,14 @@
 		                </li>
 		                <li>
 		                    <a href="#">Leasing</a>
+							<ul>
+		                        <li>
+									<a href="/leasing/report/" <?php if (isset($menu)&&($menu=="learing->report")){ echo 'class="active"' ;} ?>>Report</a>
+								</li>
+		                        <li>
+									<a href="/leasing/contract/" <?php if (isset($menu)&&($menu=="leasing->contract")){ echo 'class="active"' ;} ?>>Contract</a>
+								</li>
+		                    </ul>
 		                </li>
 		            </ul>
 		        </div>
