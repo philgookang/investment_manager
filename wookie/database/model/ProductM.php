@@ -121,16 +121,19 @@ class ProductM extends BusinessModel {
 		$query .= "WHERE ";
         $query .=   "`p`.`company_idx`=`c`.`idx` AND ";
         if ($this->company_idx!=null) { $query .= "`p`.`company_idx`=? AND "; }
+        if ($this->investment_type!=null) { $query .=	"`p`.`investment_type`=? AND "; }
         if ($this->investment_status!=null) { $query .=	"`p`.`investment_status`=? AND "; }
         $query .=	"`p`.`status`=? ";
 		$query .=	"ORDER BY `p`.`idx` desc ";
 
         $fmt = "";
         if ($this->company_idx!=null) { $fmt .= "i"; }
+        if ($this->investment_type!=null) { $fmt .= "i"; }
         if ($this->investment_status!=null) { $fmt .= "i"; }
 
 		$params = array($fmt."i");
         if ($this->company_idx!=null) { $params[] = &$this->company_idx; }
+        if ($this->investment_type!=null) { $params[] = &$this->$investment_type; }
         if ($this->investment_status!=null) { $params[] = &$this->investment_status; }
         $params[] = &$this->status;
 
