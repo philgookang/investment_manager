@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://p2p.philgookang.com/';
+$config['base_url'] = 'http://investment.philgookang.com/';
 
 /*
 |--------------------------------------------------------------------------
