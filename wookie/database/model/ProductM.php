@@ -133,7 +133,7 @@ class ProductM extends BusinessModel {
 
 		$params = array($fmt."i");
         if ($this->company_idx!=null) { $params[] = &$this->company_idx; }
-        if ($this->investment_type!=null) { $params[] = &$this->$investment_type; }
+        if ($this->investment_type!=null) { $params[] = &$this->investment_type; }
         if ($this->investment_status!=null) { $params[] = &$this->investment_status; }
         $params[] = &$this->status;
 
