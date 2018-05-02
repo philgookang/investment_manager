@@ -18,7 +18,7 @@ class ReturnsM extends BusinessModel {
     public $status                  = 1;
 
     public $search_month            = null;
-    public $search_product_type     = null;
+    public $search_product_investment_type = null;
 
     // help to create quick objects
     public static function new( $data = array() ) { return (new ReturnsM())->extend($data); }
@@ -136,6 +136,7 @@ class ReturnsM extends BusinessModel {
     public function getStatus() { return $this->status; }
 
     public function setSearchMonth($search_month) { $this->search_month = $search_month; return $this; }
+    public function setSearchProductInvestmentType($search_product_investment_type) { $this->search_product_investment_type = $search_product_investment_type; return $this; }
 
     //// ------------------------------ action function
 
@@ -248,18 +249,18 @@ class ReturnsM extends BusinessModel {
 		$query .= "WHERE ";
         $query .=	"`r`.`product_idx` = `p`.`idx` AND ";
         $query .=	"`p`.`company_idx` = `c`.`idx` AND ";
-        if ($this->search_month!=null) { $query .=	"`r`.`date` LIKE ? AND "; }
-        if ($this->search_product_type!=null) { $query .=	"`p`.`type` = ? AND "; }
+        if ($this->search_month!=null) { $query .= "`r`.`date` LIKE ? AND "; }
+        if ($this->search_product_investment_type!=null) { $query .= "`p`.`investment_type` = ? AND "; }
 		$query .=	"`r`.`status`=? ";
 		$query .=	"ORDER BY `r`.`date` asc ";
 
         $fmt = "";
         if ($this->search_month!=null) { $fmt .= "s"; }
-        if ($this->search_product_type!=null) { $fmt .= "i"; }
+        if ($this->search_product_investment_type!=null) { $fmt .= "i"; }
 
 		$params = array($fmt.'i');
         if ($this->search_month!=null) { $s =  $this->search_month.'%'; $params[] = &$s; }
-        if ($this->search_product_type!=null) { $params[] = &$this->search_product_type; }
+        if ($this->search_product_investment_type!=null) { $params[] = &$this->search_product_investment_type; }
 		$params[] = &$this->status;
 
         $list = $this->postman->returnDataList( $query, $params );
