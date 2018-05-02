@@ -1,21 +1,26 @@
 <div class="panel">
-	<div class="panel-header">
-		<h1>P2P</h1>
-		<form class="panel-options input-inline" method="GET" action="/admin/p2p/">
-			<select name="heartbeat" class="input">
-				<option value="">전체</option>
-				<option value="1" <?php echo ($this->input->get('heartbeat') == '1') ? 'selected' : ''; ?>>상환중</option>
-				<option value="2" <?php echo ($this->input->get('heartbeat') == '2') ? 'selected' : ''; ?>>연체중</option>
-				<option value="3" <?php echo ($this->input->get('heartbeat') == '3') ? 'selected' : ''; ?>>상환완료</option>
-			</select>
-			<input type="submit" class="btn btn-primary" value="검색" style="height: 25px" />
+	<div class="panel-tab">
+		<a href="/admin/p2p/?investment_status=1">
+			<div class="tab-item <?php echo ($this->input->get('investment_status')=='1')?'tab-item-active':''; ?>">상환중</div>
+			<!--/.tab-item-->
+		</a>
+		<a href="/admin/p2p/?investment_status=2">
+			<div class="tab-item <?php echo ($this->input->get('investment_status')=='2')?'tab-item-active':''; ?>">연체중</div>
+			<!--/.tab-item-->
+		</a>
+		<a href="/admin/p2p/?investment_status=3">
+			<div class="tab-item <?php echo ($this->input->get('investment_status')=='3')?'tab-item-active':''; ?>">상환완료</div>
+			<!--/.tab-item-->
+		</a>
+
+		<form class="panel-options input-inline" method="GET" action="">
 			<a href="/admin/p2p/manage/" class="btn btn-primary">Create</a>
 		</form>
 		<!--/.panel-options-->
 	</div>
-	<!--/.panel-header-->
+	<!--/.panel-tab-->
 
-	<div class="panel-body padTopNone">
+	<div class="panel-body">
 		<table class="table table-bordered table-striped table-hover">
             <thead>
 				<tr>
