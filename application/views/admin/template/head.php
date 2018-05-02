@@ -34,6 +34,19 @@
 
 	</head>
 	<body>
+		<div class="head">
+			<div class="container">
+				<div class="navigation">
+					<ul>
+						<li><a href="/admin/p2p/?investment_status=1">P2P</a></li>
+						<li><a href="#">Stock</a></li>
+						<li><a href="/admin/lease/">Lease</a></li>
+					</ul>
+				</div>
+				<!--/.navigation-->
+			</div>
+			<!--/.container-->
+		</div>
 
 		<div class="body">
 			<div class="container">
