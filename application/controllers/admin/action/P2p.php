@@ -84,6 +84,6 @@ class P2p extends CI_Controller {
             }
         }
 
-        redirect('/admin/p2p/');
+        redirect($this->input->post('rurl'));
 	}
 }
