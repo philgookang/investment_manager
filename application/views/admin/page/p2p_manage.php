@@ -3,7 +3,7 @@
     <form action="/admin/action/p2p" method="POST">
     	<div class="panel-body">
             <div class="row">
-				<input type="hidden" name="rurl" value="<?php if ($this->input->get('investment_type')) { echo $this->input->get('investment_type'); }  if ($product->getIdx()!=null) { echo $product->getInvestmentType(); } ?>"/>
+				<input type="hidden" name="rurl" value="<?php echo $rurl; ?>"/>
                 <input type="hidden" name="investment_type" value="<?php if ($this->input->get('investment_type')) { echo $this->input->get('investment_type'); }  if ($product->getIdx()!=null) { echo $product->getInvestmentType(); } ?>" />
 				<input type="hidden" name="product_idx" value="<?php echo $product->getIdx(); ?>" />
 				<label>상품명</label>

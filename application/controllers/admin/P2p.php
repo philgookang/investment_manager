@@ -39,6 +39,7 @@ class P2p extends CI_Controller {
 			$rurl = '/admin/lease/';
 			$company_type = COMPANY_TYPE::LEASE;
 		}
+		$data['rurl']			= $rurl;
 		$data['return_list'] 	= ReturnsM::new()->setProductIdx($idx)->getList();
 		$data['company_list'] 	= CompanyM::new()->setType($company_type)->getList();
 
