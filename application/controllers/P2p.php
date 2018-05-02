@@ -8,7 +8,7 @@ class P2p extends CI_Controller {
 
 		$data = array();
 		$data['page_date']	= $date;
-		$data['analyse'] 	= ReturnsM::new()->analyse();
+		$data['analyse'] 	= ReturnsM::new()->setSearchProductInvestmentType(PRODUCT_INVESTMENT_TYPE::P2PFUND)->analyse();
 
 		$this->load->view('website/template/head_new', array('menu' => 'p2p->report'));
 		$this->load->view('website/page/p2p_report', $data);
