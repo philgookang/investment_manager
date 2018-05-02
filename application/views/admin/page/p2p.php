@@ -14,7 +14,7 @@
 		</a>
 
 		<form class="panel-options input-inline" method="GET" action="">
-			<a href="/admin/p2p/manage/" class="btn btn-primary">Create</a>
+			<a href="/admin/p2p/manage/?investment_type=<?php echo PRODUCT_INVESTMENT_TYPE::LEASE; ?>" class="btn btn-primary">Create</a>
 		</form>
 		<!--/.panel-options-->
 	</div>
