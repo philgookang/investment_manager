@@ -5,6 +5,7 @@ class P2p extends CI_Controller {
 	public function index() {
 
 		$product = ProductM::new();
+		$product->setInvestmentType(PRODUCT_INVESTMENT_TYPE::P2PFUND);
 
 		if ($this->input->get('investment_status') != '') {
 			$product->setInvestmentStatus($this->input->get('investment_status'));
