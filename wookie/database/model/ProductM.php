@@ -4,6 +4,7 @@ class PRODUCT_INVESTMENT_TYPE {
     const STOCK       = 1;
     const P2PFUND     = 2;
     const LEASE       = 3;
+    const LOAN        = 4;
 }
 
 class PRODUCT_INVESTMENT_STATUS {
