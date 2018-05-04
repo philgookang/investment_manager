@@ -6,14 +6,30 @@
 				<input type="hidden" name="rurl" value="<?php echo $rurl; ?>"/>
                 <input type="hidden" name="investment_type" value="<?php if ($this->input->get('investment_type')) { echo $this->input->get('investment_type'); }  if ($product->getIdx()!=null) { echo $product->getInvestmentType(); } ?>" />
 				<input type="hidden" name="product_idx" value="<?php echo $product->getIdx(); ?>" />
-				<label>상품명</label>
+                <label>
+                    <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                    <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                        상품명
+                    <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                        호수
+                    <?php } ?>
+                </label>
                 <input type="text" class="input" name="name" value="<?php echo $product->getName(); ?>" />
             </div>
             <!--/.row-->
             <br />
 			<div class="row-col">
 				<div class="col-4">
-					<label>업체</label>
+                    <label>
+                        <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                        <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                            업체
+                        <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                            건물명
+                        <?php } ?>
+                    </label>
 					<select class="input" name="company_idx">
 						<?php foreach($company_list as $company) { ?>
 							<option value="<?php echo $company->getIdx(); ?>" <?php if ($product->getCompanyIdx() == $company->getIdx()) { echo 'selected'; } ?> >
@@ -23,7 +39,15 @@
 					</select>
 				</div>
 				<div class="col-4">
-					<label>투자원금(원)</label>
+					<label>
+                        <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+                            투자원금(원)
+                        <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                            투자원금(원)
+                        <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                            투자원금(원)
+                        <?php } ?>
+                    </label>
 					<input type="text" class="input" name="amount" placeholder="" value="<?php echo $product->getAmount(); ?>" />
 				</div>
 				<div class="col-4">
@@ -56,15 +80,39 @@
 					</div>
 				</div>
 				<div class="col-4">
-					<label>연체시작</label>
+					<label>
+                        <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                        <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                            연체시작
+                        <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                            SKIP
+                        <?php } ?>
+                    </label>
 					<input type="text" class="input" name="late_start_date" value="<?php echo ($product->getLateStartDate()!=null)?$product->getLateStartDate():'0000-00-00'; ?>" />
 				</div>
 				<div class="col-4">
-					<label>연체마감</label>
+					<label>
+                        <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                        <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                            연체마감
+                        <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                            SKIP
+                        <?php } ?>
+                    </label>
 					<input type="text" class="input" name="late_end_date" value="<?php echo ($product->getLateEndDate()!=null)?$product->getLateEndDate():'0000-00-00'; ?>" />
 				</div>
 				<div class="col-4">
-					<label>투자완료</label>
+					<label>
+                        <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                        <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                            투자완료
+                        <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                            계약완료
+                        <?php } ?>
+                    </label>
 					<input type="text" class="input" name="investment_complete_date" value="<?php echo ($product->getInvestmentCompleteDate()!=null)?$product->getInvestmentCompleteDate():'0000-00-00'; ?>" />
 				</div>
             </div>
@@ -76,12 +124,52 @@
         				<tr>
         					<th style="width: 100px;">날짜</th>
 							<th style="width: 45px;">회</th>
-							<th>원금</th>
-                            <th>수익</th>
-							<th>상품권</th>
-                            <th>연체금</th>
+							<th>
+                                <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                                <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                                    원금
+                                <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    보조금
+                                <?php } ?>
+                            </th>
+                            <th>
+                                <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                                <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                                    수익
+                                <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    월세
+                                <?php } ?>
+                            </th>
+							<th>
+                                <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                                <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                                    상품권
+                                <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    SKIP
+                                <?php } ?>
+                            </th>
+                            <th>
+                                <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                                <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                                    연체금
+                                <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    SKIP
+                                <?php } ?>
+                            </th>
                             <th>세금</th>
-                            <th>수수료</th>
+                            <th>
+                                <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                                <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                                    수수료
+                                <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    SKIP
+                                <?php } ?>
+                            </th>
 							<th style="width: 80px;">상태</th>
 							<th style="width: 40px;"></th>
         				</tr>
