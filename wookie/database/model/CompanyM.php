@@ -4,6 +4,7 @@ class COMPANY_TYPE {
     const FUNDING = 1;
     const STOCK   = 2;
     const LEASE   = 3;
+    const LOAN    = 4;
 }
 
 class CompanyM extends BusinessModel {
