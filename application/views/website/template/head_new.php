@@ -48,6 +48,17 @@
 								</li>
 		                    </ul>
 		                </li>
+						<li>
+		                    <a href="#">Loan</a>
+							<ul>
+		                        <li>
+									<a href="/loan/report/" <?php if (isset($menu)&&($menu=="loan->report")){ echo 'class="active"' ;} ?>>Report</a>
+								</li>
+		                        <li>
+									<a href="/loan/contract/" <?php if (isset($menu)&&($menu=="loan->contract")){ echo 'class="active"' ;} ?>>Contract</a>
+								</li>
+		                    </ul>
+		                </li>
 		            </ul>
 		        </div>
 		        <!--/.section-->
