@@ -141,13 +141,12 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', '투자수익');
-        data.addColumn('number', '--');
 
         data.addRows([
             <?php
                 for($i = 0; $i < count($analyse); $i++) {
                     if ($i != 0) { echo ', '; }
-                    echo '["'.$analyse[$i]['month'].'", '.$analyse[$i]['profit'].', 0]';
+                    echo '["'.$analyse[$i]['month'].'", '.$analyse[$i]['profit'].']';
                 }
             ?>
         ]);
