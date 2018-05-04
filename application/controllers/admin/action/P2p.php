@@ -38,6 +38,7 @@ class P2p extends CI_Controller {
         $profit_late_list   = $this->input->post('profit_late');
         $tax_list           = $this->input->post('tax');
 		$term_list          = $this->input->post('term');
+		$loan_list          = $this->input->post('loan');
         $service_price_list = $this->input->post('service_price');
 		$marker_list 		= $this->input->post('marker');
 		$type_list			= $this->input->post('type');
@@ -52,6 +53,7 @@ class P2p extends CI_Controller {
             $profit_late    = (isset($profit_late_list[$i]) && ($profit_late_list[$i] != '')) ? $profit_late_list[$i] : '0';
             $tax            = (isset($tax_list[$i]) && ($tax_list[$i] != '')) ? $tax_list[$i] : '0';
 			$term           = (isset($term_list[$i]) && ($term_list[$i] != '')) ? $term_list[$i] : '0';
+			$loan           = (isset($loan_list[$i]) && ($loan_list[$i] != '')) ? $loan_list[$i] : '0';
             $service_price  = (isset($service_price_list[$i]) && ($service_price_list[$i] != '')) ? $service_price_list[$i] : '0';
 			$marker 		= (isset($marker_list[$i]) && ($marker_list[$i] != '')) ? $marker_list[$i] : '0';
 
@@ -62,6 +64,7 @@ class P2p extends CI_Controller {
 			$bond = str_replace(',', '', $bond);
 			$profit_late = str_replace(',', '', $profit_late);
 			$tax = str_replace(',', '', $tax);
+			$loan = str_replace(',', '', $loan);
 			$service_price = str_replace(',', '', $service_price);
 
             $return = ReturnsM::new()
@@ -74,6 +77,7 @@ class P2p extends CI_Controller {
                         ->setProfitLate($profit_late)
                         ->setTax($tax)
 						->setTerm($term)
+						->setLoan($loan)
                         ->setFee($service_price)
 						->setPaymentStatus($marker);
 

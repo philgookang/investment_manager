@@ -13,6 +13,8 @@
                         상품명
                     <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                         호수
+                    <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                        대출명
                     <?php } ?>
                 </label>
                 <input type="text" class="input" name="name" value="<?php echo $product->getName(); ?>" />
@@ -28,6 +30,8 @@
                             업체
                         <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                             건물명
+                        <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                            은행
                         <?php } ?>
                     </label>
 					<select class="input" name="company_idx">
@@ -46,6 +50,8 @@
                             투자원금(원)
                         <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                             투자원금(원)
+                        <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                            대출금
                         <?php } ?>
                     </label>
 					<input type="text" class="input" name="amount" placeholder="" value="<?php echo $product->getAmount(); ?>" />
@@ -87,6 +93,8 @@
                             연체시작
                         <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                             SKIP
+                        <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                            SKIP
                         <?php } ?>
                     </label>
 					<input type="text" class="input" name="late_start_date" value="<?php echo ($product->getLateStartDate()!=null)?$product->getLateStartDate():'0000-00-00'; ?>" />
@@ -98,6 +106,8 @@
                         <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
                             연체마감
                         <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                            SKIP
+                        <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
                             SKIP
                         <?php } ?>
                     </label>
@@ -111,6 +121,8 @@
                             투자완료
                         <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                             계약완료
+                        <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                            SKIP
                         <?php } ?>
                     </label>
 					<input type="text" class="input" name="investment_complete_date" value="<?php echo ($product->getInvestmentCompleteDate()!=null)?$product->getInvestmentCompleteDate():'0000-00-00'; ?>" />
@@ -131,6 +143,8 @@
                                     원금
                                 <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                                     보조금
+                                <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                                    SKIP
                                 <?php } ?>
                             </th>
                             <th>
@@ -140,6 +154,8 @@
                                     수익
                                 <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                                     월세
+                                <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                                    SKIP
                                 <?php } ?>
                             </th>
 							<th>
@@ -149,6 +165,8 @@
                                     상품권
                                 <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                                     SKIP
+                                <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                                    SKIP
                                 <?php } ?>
                             </th>
                             <th>
@@ -157,6 +175,8 @@
                                 <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
                                     연체금
                                 <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    SKIP
+                                <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
                                     SKIP
                                 <?php } ?>
                             </th>
@@ -168,6 +188,19 @@
                                     수수료
                                 <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
                                     SKIP
+                                <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                                    SKIP
+                                <?php } ?>
+                            </th>
+                            <th>
+                                <?php if ($company_type == COMPANY_TYPE::STOCK) { ?>
+
+                                <?php } else if ($company_type == COMPANY_TYPE::FUNDING) { ?>
+                                    SKIP
+                                <?php } else if ($company_type == COMPANY_TYPE::LEASE) { ?>
+                                    SKIP
+                                <?php } else if ($company_type == COMPANY_TYPE::LOAN) { ?>
+                                    대출이자
                                 <?php } ?>
                             </th>
 							<th style="width: 80px;">상태</th>
@@ -192,6 +225,9 @@
                                 </td>
 								<td>
                                     <input type="text" class="input" name="bond[]" value="<?php echo $return->getBond(); ?>"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="input" name="loan[]" value="<?php echo $return->getLoan(); ?>"/>
                                 </td>
                                 <td>
                                     <input type="text" class="input" name="profit_late[]" value="<?php echo $return->getProfitLate(); ?>"/>
@@ -266,6 +302,9 @@
                 '</td>' +
 				'<td>' +
 					'<input type="text" class="input" name="bond[]" value=""/>' +
+				'</td>' +
+                '<td>' +
+					'<input type="text" class="input" name="loan[]" value=""/>' +
 				'</td>' +
                 '<td>' +
                     '<input type="text" class="input" name="profit_late[]" value="" />' +
