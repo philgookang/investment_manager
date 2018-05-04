@@ -41,10 +41,10 @@
 		                    <a href="#">Leasing</a>
 							<ul>
 		                        <li>
-									<a href="/leasing/report/" <?php if (isset($menu)&&($menu=="learing->report")){ echo 'class="active"' ;} ?>>Report</a>
+									<a href="/lease/report/" <?php if (isset($menu)&&($menu=="lease->report")){ echo 'class="active"' ;} ?>>Report</a>
 								</li>
 		                        <li>
-									<a href="/leasing/contract/" <?php if (isset($menu)&&($menu=="leasing->contract")){ echo 'class="active"' ;} ?>>Contract</a>
+									<a href="/lease/contract/" <?php if (isset($menu)&&($menu=="lease->contract")){ echo 'class="active"' ;} ?>>Contract</a>
 								</li>
 		                    </ul>
 		                </li>
