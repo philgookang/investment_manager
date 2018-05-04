@@ -1,6 +1,6 @@
 <div class="panel">
 	<div class="panel-header">
-		<h1>P2P</h1>
+		<h1>Lease</h1>
 		<form class="panel-options input-inline" method="GET" action="/admin/lease/">
 			<select name="heartbeat" class="input">
 				<option value="">전체</option>
