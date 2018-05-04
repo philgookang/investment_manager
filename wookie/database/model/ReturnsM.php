@@ -14,6 +14,7 @@ class ReturnsM extends BusinessModel {
     public $term                    = null;
     public $payment_status          = null;
     public $bond                    = null;
+    public $loan                    = null;
     public $created_date_time       = null;
     public $status                  = 1;
 
@@ -36,6 +37,7 @@ class ReturnsM extends BusinessModel {
         $total_fee                  = 0;
         $total_tax                  = 0;
         $total_value                = 0;
+        $total_loan                 = 0;
         $total_investment           = 0;
 
         foreach($investment_list as $investment) {
@@ -45,7 +47,8 @@ class ReturnsM extends BusinessModel {
             $total_profit_late          += $investment->profit_late;
             $total_tax                  += $investment->tax;
             $total_fee                  += $investment->fee;
-            $investment->total          = ($investment->profit + $investment->bond + $investment->profit_late) - ($investment->tax + $investment->fee);
+            $total_loan                 += $investment->loan;
+            $investment->total          = ($investment->profit + $investment->bond + $investment->profit_late) - ($investment->tax + $investment->fee + $investment->loan);
             $total_value                += $investment->total;
         }
 
@@ -58,6 +61,7 @@ class ReturnsM extends BusinessModel {
             'total_value'               => $total_value,
             'total_investment'          => $total_investment,
             'total_bond'                => $total_bond,
+            'total_loan'                => $total_loan,
             'list'                      => $investment_list
         );
     }
@@ -126,6 +130,9 @@ class ReturnsM extends BusinessModel {
     public function setBond( $bond ) { $this->bond = $bond; return $this; }
     public function getBond() { return $this->bond; }
 
+    public function setLoan( $loan ) { $this->loan = $loan; return $this; }
+    public function getLoan() { return $this->loan; }
+
     public function setPaymentStatus( $payment_status ) { $this->payment_status = $payment_status; return $this; }
     public function getPaymentStatus() { return $this->payment_status; }
 
@@ -142,9 +149,9 @@ class ReturnsM extends BusinessModel {
 
     public function create() {
 
-        $data   = array($this->product_idx, $this->date, $this->investment, $this->profit, $this->bond, $this->profit_late, $this->tax, $this->term, $this->fee, $this->payment_status);
-        $field  = array('product_idx', 'date', 'investment', 'profit', 'bond', 'profit_late', 'tax', 'term', 'fee', 'payment_status');
-        $fmt    = 'isiiiiiiii';
+        $data   = array($this->product_idx, $this->date, $this->investment, $this->profit, $this->bond, $this->loan, $this->profit_late, $this->tax, $this->term, $this->fee, $this->payment_status);
+        $field  = array('product_idx', 'date', 'investment', 'profit', 'bond', 'loan', 'profit_late', 'tax', 'term', 'fee', 'payment_status');
+        $fmt    = 'isiiiiiiiii';
 
         return $this->create_omr('returns', $field, $data, $fmt);
     }
@@ -163,14 +170,15 @@ class ReturnsM extends BusinessModel {
         $query .=	"`tax`=?, ";
         $query .=	"`term`=?, ";
         $query .=	"`fee`=?, ";
+        $query .=	"`loan`=?, ";
         $query .=	"`payment_status`=?, ";
         $query .=	"`status`=? ";
         $query .= "WHERE ";
         $query .=	"`idx`=? ";
 
         $this->postman->execute($query, array(
-            'isiiiiiiiiii', &$this->product_idx, &$this->date, &$this->investment, &$this->profit,
-            &$this->bond, &$this->profit_late, &$this->tax, &$this->term, &$this->fee, &$this->payment_status, &$this->status, &$this->idx
+            'isiiiiiiiiiii', &$this->product_idx, &$this->date, &$this->investment, &$this->profit,
+            &$this->bond, &$this->profit_late, &$this->tax, &$this->term, &$this->fee, &$this->loan, &$this->payment_status, &$this->status, &$this->idx
         ));
     }
 
@@ -199,6 +207,7 @@ class ReturnsM extends BusinessModel {
         $query .=   "  `r`.`profit_late` as profit_late, ";
         $query .=   "  `r`.`tax` as tax, ";
         $query .=   "  `r`.`fee` as fee, ";
+        $query .=   "  `r`.`loan` as loan, ";
         $query .=   "  `r`.`date` as date, ";
         $query .=   "  `r`.`payment_status` as payment_status ";
 		$query .= "FROM ";
@@ -239,6 +248,7 @@ class ReturnsM extends BusinessModel {
         $query .=   "  `r`.`profit_late` as profit_late, ";
         $query .=   "  `r`.`tax` as tax, ";
         $query .=   "  `r`.`fee` as fee, ";
+        $query .=   "  `r`.`loan` as loan, ";
         $query .=   "  `r`.`date` as date, ";
         $query .=   "  `r`.`term` as current_term, ";
         $query .=   "  `r`.`payment_status` as payment_status ";
