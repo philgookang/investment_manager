@@ -92,6 +92,13 @@ class CompanyM extends BusinessModel {
 
     //// ------------------------------ action function
 
+    public function create() {
+        $data   = array($this->name, $this->type);
+        $field  = array('name', 'type');
+        $fmt    = 'si';
+        return $this->create_omr('company', $field, $data, $fmt );
+    }
+
     public function getList($sortBy = 'name', $sortDirection = 'asc') {
 
         $query	= "SELECT ";
