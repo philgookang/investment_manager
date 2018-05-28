@@ -88,6 +88,14 @@ a:link, a:visited, visited, active, hover, focus { color:#000 ; text-decoration:
     box-sizing: border-box;
     padding-bottom: 20px;
 }
+.container .content h2 {
+    color: #172b4d;
+    font-size: 24px;
+    font-weight: 900;
+    box-sizing: border-box;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
 .container .content form {
     position: absolute;
     top: 0px;
