@@ -42,6 +42,7 @@
 						<li><a href="#">Stock</a></li>
 						<li><a href="/admin/lease/">Lease</a></li>
 						<li><a href="/admin/loan/">Loan</a></li>
+						<li><a href="/admin/company/">Company</a></li>
 					</ul>
 				</div>
 				<!--/.navigation-->
