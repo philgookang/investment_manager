@@ -99,6 +99,21 @@ class CompanyM extends BusinessModel {
         return $this->create_omr('company', $field, $data, $fmt );
     }
 
+    public function update() {
+
+        $query	= "UPDATE ";
+        $query .=   "`company` ";
+        $query .= "SET ";
+        $query .=	"`name`=?, ";
+        $query .=	"`type`=? ";
+        $query .= "WHERE ";
+        $query .=	"`idx`=? ";
+
+        $this->postman->execute($query, array(
+            'sii', &$this->name, &$this->type, &$this->idx
+        ));
+    }
+
     public function getList($sortBy = 'name', $sortDirection = 'asc') {
 
         $query	= "SELECT ";
