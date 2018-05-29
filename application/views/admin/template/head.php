@@ -39,7 +39,7 @@
 				<div class="navigation">
 					<ul>
 						<li><a href="/admin/p2p/?investment_status=1">P2P</a></li>
-						<li><a href="#">Stock</a></li>
+						<li><a href="/admin/stock/">Stock</a></li>
 						<li><a href="/admin/lease/">Lease</a></li>
 						<li><a href="/admin/loan/">Loan</a></li>
 						<li><a href="/admin/company/">Company</a></li>
