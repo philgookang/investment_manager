@@ -27,6 +27,10 @@ class ProductM extends BusinessModel {
     public $investment_status       = null;
     public $investment_complete_date= null;
     public $investment_type         = null;
+    public $bought_date             = null;
+    public $sold_date               = null;
+    public $bought_price            = null;
+    public $sold_price              = null;
     public $created_date_time       = null;
     public $status                  = 1;
 
@@ -74,6 +78,18 @@ class ProductM extends BusinessModel {
     public function setInvestmentType($investment_type) { $this->investment_type = $investment_type; return $this; }
     public function getInvestmentType() { return $this->investment_type; }
 
+    public function setBoughtDate($bought_date) { $this->bought_date = $bought_date; return $this; }
+    public function getBoughtDate() { return $this->bought_date; }
+
+    public function setSoldDate($sold_date) { $this->sold_date = $sold_date; return $this; }
+    public function getSoldDate() { return $this->sold_date; }
+
+    public function setBoughtPrice($bought_price) { $this->bought_price = $bought_price; return $this; }
+    public function getBoughtPrice() { return $this->bought_price; }
+
+    public function setSoldPrice($sold_price) { $this->sold_price = $sold_price; return $this; }
+    public function getSoldPrice() { return $this->sold_price; }
+
     public function setCreatedDateTime( $created_date_time ) { $this->created_date_time = $created_date_time; return $this; }
     public function getCreatedDateTime($format = 'Y-m-d H:i:s') { $d = new DateTime($this->created_date_time); return $d->format($format); }
 
@@ -83,9 +99,9 @@ class ProductM extends BusinessModel {
     //// ------------------------------ action function
 
     public function create() {
-        $data   = array($this->company_idx, $this->name, $this->interest, $this->amount, $this->total_term, $this->late_start_date, $this->late_end_date, $this->investment_status, $this->investment_complete_date, $this->investment_type);
-        $field  = array('company_idx', 'name', 'interest', 'amount', 'total_term', 'late_start_date', 'late_end_date', 'investment_status', 'investment_complete_date', 'investment_type');
-        $fmt    = 'issiissisi';
+        $data   = array($this->company_idx, $this->name, $this->interest, $this->amount, $this->total_term, $this->late_start_date, $this->late_end_date, $this->investment_status, $this->investment_complete_date, $this->investment_type, $this->bought_date, $this->sold_date, $this->bought_price, $this->sold_price);
+        $field  = array('company_idx', 'name', 'interest', 'amount', 'total_term', 'late_start_date', 'late_end_date', 'investment_status', 'investment_complete_date', 'investment_type', 'bought_date', 'sold_date', 'bought_price', 'sold_price');
+        $fmt    = 'issiissisissii';
         return $this->create_omr( 'product', $field, $data, $fmt );
     }
 
@@ -103,19 +119,23 @@ class ProductM extends BusinessModel {
         $query .=	"`late_end_date`=?, ";
         $query .=	"`investment_status`=?, ";
         $query .=	"`investment_complete_date`=?, ";
-        $query .=	"`investment_type`=? ";
+        $query .=	"`investment_type`=?, ";
+        $query .=	"`bought_date`=?, ";
+        $query .=	"`sold_date`=?, ";
+        $query .=	"`bought_price`=?, ";
+        $query .=	"`sold_price`=? ";
         $query .= "WHERE ";
         $query .=	"`idx`=? ";
 
         $this->postman->execute($query, array(
-            'issiissisii', &$this->company_idx, &$this->name, &$this->interest, &$this->amount, &$this->total_term, &$this->late_start_date, &$this->late_end_date, &$this->investment_status, &$this->investment_complete_date, &$this->investment_type, &$this->idx
+            'issiissisii', &$this->company_idx, &$this->name, &$this->interest, &$this->amount, &$this->total_term, &$this->late_start_date, &$this->late_end_date, &$this->investment_status, &$this->investment_complete_date, &$this->investment_type, &$this->bought_date, &$this->sold_date, &$this->bought_price, &$this->sold_price, &$this->idx
         ));
     }
 
     public function getList() {
 
         $query	= "SELECT ";
-        $query .=   " `p`.`idx`,`c`.`name` as company_name,`p`.`name` as product_name, `p`.`amount`, `p`.`interest`,`p`.`total_term`,`p`.`investment_status`,`p`.`investment_complete_date` ";
+        $query .=   " `p`.`idx`,`c`.`name` as company_name,`p`.`name` as product_name, `p`.`amount`, `p`.`interest`,`p`.`total_term`,`p`.`investment_status`,`p`.`investment_complete_date`,`p`.`bought_date`,`p`.`bought_price`,`p`.`sold_date`,`p`.sold_price ";
 		$query .= "FROM ";
         $query .=   "`product` as `p`, ";
         $query .=   "`company` as `c` ";
