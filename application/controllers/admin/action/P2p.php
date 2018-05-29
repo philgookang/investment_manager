@@ -19,6 +19,10 @@ class P2p extends CI_Controller {
 					->setLateStartDate($this->input->post('late_start_date'))
 					->setLateEndDate($this->input->post('late_end_date'))
 					->setInvestmentStatus($this->input->post('investment_status'))
+					->setBoughtDate($this->input->post('bought_date'))
+					->setSoldDate($this->input->post('sold_date'))
+					->setBoughtPrice($this->input->post('bought_price'))
+					->setSoldPrice($this->input->post('sold_price'))
 					->setInvestmentCompleteDate($this->input->post('investment_complete_date'));
 
         if ($product->getIdx() == null) {
@@ -26,6 +30,11 @@ class P2p extends CI_Controller {
         } else {
             $product->update();
         }
+
+		if ($this->input->post('qrurl')) {
+			redirect($this->input->post('qrurl'));
+			return;
+		}
 
         // remove all first
         ReturnsM::new()->setProductIdx($product->getIdx())->setStatus(1)->removeAll();
